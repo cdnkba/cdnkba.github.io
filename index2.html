@@ -1,81 +1,218 @@
-<!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
+  <title>Crypto Market Dashboard</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Info for Coins</title>
-  <script async src="https://static.coinstats.app/widgets/coin-price-widget.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script async src="https://static.coinstats.app/widgets/coin-price-widget.js"></script>
   <style>
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      margin: 0;
+      padding: 20px;
+    }
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
     .coin {
-      float: left;
-      margin-right: 10px;
+      background: #1C1B1B;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .refresh-btn {
+      background: #FFA959;
+      color: #1C1B1B;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .market-info {
+      background: #1C1B1B;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
+  <div class="header">
+    <h1>Crypto Market Dashboard</h1>
+    <button class="refresh-btn" id="refreshData">Actualizar Datos</button>
+  </div>
+
+  <div class="market-info" id="globalMarketData">
+    <h2>Cargando datos del mercado...</h2>
+  </div>
+
   <!-- TradingView Widget BEGIN -->
-  <div class="tradingview-widget-container">
-    <div class="tradingview-widget-container__widget"></div>
-    <div class="tradingview-widget-copyright">
-      <a href="https://es.tradingview.com/" rel="noopener nofollow" target="_blank">
-        <span class="blue-text">Siga los mercados en TradingView</span>
-      </a>
-    </div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://es.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Siga los mercados en TradingView</span></a></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+  {
+  "symbols": [
     {
-      "symbols": [
-        {"proName": "FOREXCOM:SPXUSD", "title": "S&P 500 Index"},
-        {"proName": "FOREXCOM:NSXUSD", "title": "US 100 Cash CFD"},
-        {"proName": "FX_IDC:EURUSD", "title": "EUR to USD"},
-        {"proName": "BITSTAMP:BTCUSD", "title": "Bitcoin"},
-        {"proName": "BITSTAMP:ETHUSD", "title": "Ethereum"}
-      ],
-      "showSymbolLogo": true,
-      "isTransparent": false,
-      "displayMode": "adaptive",
-      "colorTheme": "dark",
-      "locale": "es"
+      "proName": "FOREXCOM:SPXUSD",
+      "title": "S&P 500 Index"
+    },
+    {
+      "proName": "FOREXCOM:NSXUSD",
+      "title": "US 100 Cash CFD"
+    },
+    {
+      "proName": "FX_IDC:EURUSD",
+      "title": "EUR to USD"
+    },
+    {
+      "proName": "BITSTAMP:BTCUSD",
+      "title": "Bitcoin"
+    },
+    {
+      "proName": "BITSTAMP:ETHUSD",
+      "title": "Ethereum"
     }
-    </script>
+  ],
+  "showSymbolLogo": true,
+  "isTransparent": false,
+  "displayMode": "adaptive",
+  "colorTheme": "dark",
+  "locale": "es"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+ 
   </div>
   <!-- TradingView Widget END -->
-
-  <!-- Contenedor donde se van a cargar los widgets de monedas -->
-  <div id="coins-container">
-    <!-- Los widgets de monedas se cargarán aquí mediante AJAX -->
+  
+  <div class="dashboard" id="cryptoDashboard">
+    <coin-stats-ticker-widget coin-id="bitcoin" locale="es" currency="USD" rank-background="#FFA959"
+      background="#1C1B1B" status-up-color="#74D492" status-down-color="#FE4747" rank-text-color="#1C1B1B"
+      text-color="#FFFFFF" border-color="rgba(255,255,255,0.15)" type="large" font="Roboto, Arial, Helvetica"
+      height="182" width="350"></coin-stats-ticker-widget>
+  </div>
+  <div class="coin">
+    <coin-stats-ticker-widget coin-id="bitcoin-cash" locale="es" currency="USD" rank-background="#FFA959"
+      background="#1C1B1B" status-up-color="#74D492" status-down-color="#FE4747" rank-text-color="#1C1B1B"
+      text-color="#FFFFFF" border-color="rgba(255,255,255,0.15)" type="large" font="Roboto, Arial, Helvetica"
+      height="182" width="350"></coin-stats-ticker-widget>
+  </div>
+  <div class="coin">
+    <coin-stats-ticker-widget coin-id="litecoin" locale="es" currency="USD" rank-background="#FFA959"
+      background="#1C1B1B" status-up-color="#74D492" status-down-color="#FE4747" rank-text-color="#1C1B1B"
+      text-color="#FFFFFF" border-color="rgba(255,255,255,0.15)" type="large" font="Roboto, Arial, Helvetica"
+      height="182" width="350"></coin-stats-ticker-widget>
+  </div>
+  <div class="coin">
+    <coin-stats-ticker-widget coin-id="bloktopia" locale="es" currency="USD" rank-background="#FFA959"
+      background="#1C1B1B" status-up-color="#74D492" status-down-color="#FE4747" rank-text-color="#1C1B1B"
+      text-color="#FFFFFF" border-color="rgba(255,255,255,0.15)" type="large" font="Roboto, Arial, Helvetica"
+      height="182" width="350"></coin-stats-ticker-widget>
+  </div>
+  <div class="coin">
+    <coin-stats-ticker-widget coin-id="tether" locale="es" currency="USD" rank-background="#FFA959"
+      background="#1C1B1B" status-up-color="#74D492" status-down-color="#FE4747" rank-text-color="#1C1B1B"
+      text-color="#FFFFFF" border-color="rgba(255,255,255,0.15)" type="large" font="Roboto, Arial, Helvetica"
+      height="182" width="350"></coin-stats-ticker-widget>
+  </div>
+  <div class="coin">
+    <coin-stats-ticker-widget coin-id="binance-coin" locale="es" currency="USD" rank-background="#FFA959"
+      background="#1C1B1B" status-up-color="#74D492" status-down-color="#FE4747" rank-text-color="#1C1B1B"
+      text-color="#FFFFFF" border-color="rgba(255,255,255,0.15)" type="large" font="Roboto, Arial, Helvetica"
+      height="182" width="350"></coin-stats-ticker-widget>
+  </div>
+  <div class="coin">
+    <coin-stats-ticker-widget coin-id="ethereum" locale="es" currency="USD" rank-background="#FFA959"
+      background="#1C1B1B" status-up-color="#74D492" status-down-color="#FE4747" rank-text-color="#1C1B1B"
+      text-color="#FFFFFF" border-color="rgba(255,255,255,0.15)" type="large" font="Roboto, Arial, Helvetica"
+      height="182" width="350"></coin-stats-ticker-widget>
+  </div>
+  <div class="coin">
+    <coin-stats-ticker-widget coin-id="the-open-network" locale="es" currency="USD" rank-background="#FFA959"
+      background="#1C1B1B" status-up-color="#74D492" status-down-color="#FE4747" rank-text-color="#1C1B1B"
+      text-color="#FFFFFF" border-color="rgba(255,255,255,0.15)" type="large" font="Roboto, Arial, Helvetica"
+      height="182" width="350"></coin-stats-ticker-widget>
+  </div>
+  <div class="coin">
+    <coin-stats-ticker-widget coin-id="dogs-2" locale="es" currency="USD" rank-background="#FFA959"
+      background="#1C1B1B" status-up-color="#74D492" status-down-color="#FE4747" rank-text-color="#1C1B1B"
+      text-color="#FFFFFF" border-color="rgba(255,255,255,0.15)" type="large" font="Roboto, Arial, Helvetica"
+      height="182" width="350"></coin-stats-ticker-widget>
+  </div>
+  <div class="coin">
+    <coin-stats-ticker-widget coin-id="hamster-kombat" locale="es" currency="USD" rank-background="#FFA959"
+      background="#1C1B1B" status-up-color="#74D492" status-down-color="#FE4747" rank-text-color="#1C1B1B"
+      text-color="#FFFFFF" border-color="rgba(255,255,255,0.15)" type="large" font="Roboto, Arial, Helvetica"
+      height="182" width="350"></coin-stats-ticker-widget>
+  </div>
+  <div class="coin">
+    <coin-stats-ticker-widget coin-id="ducks" locale="es" currency="USD" rank-background="#FFA959"
+      background="#1C1B1B" status-up-color="#74D492" status-down-color="#FE4747" rank-text-color="#1C1B1B"
+      text-color="#FFFFFF" border-color="rgba(255,255,255,0.15)" type="large" font="Roboto, Arial, Helvetica"
+      height="182" width="350"></coin-stats-ticker-widget>
+  </div>
   </div>
 
   <script>
-    // Función para cargar los widgets de las monedas mediante AJAX
-    function cargarWidgets() {
-      var coins = [
-        'bitcoin', 'bitcoin-cash', 'litecoin', 'bloktopia', 'tether',
-        'binance-coin', 'ethereum', 'the-open-network', 'dogs-2', 'hamster-kombat', 'ducks'
-      ];
-      
-      $('#coins-container').empty(); // Limpiar el contenedor antes de cargar nuevos widgets
+    $(document).ready(function() {
+      // Load initial data
+      loadMarketData();
+      loadCoinData();
 
-      // Crear y agregar los widgets de cada moneda al contenedor
-      coins.forEach(function(coin) {
-        var widgetHTML = '<div class="coin">' +
-          '<coin-stats-ticker-widget coin-id="' + coin + '" locale="es" currency="USD" rank-background="#FFA959" ' +
-          'background="#1C1B1B" status-up-color="#74D492" status-down-color="#FE4747" rank-text-color="#1C1B1B" ' +
-          'text-color="#FFFFFF" border-color="rgba(255,255,255,0.15)" type="large" font="Roboto, Arial, Helvetica" ' +
-          'height="182" width="350"></coin-stats-ticker-widget>' +
-          '</div>';
-        
-        $('#coins-container').append(widgetHTML);
+      // Set up refresh button
+      $('#refreshData').click(function() {
+        loadMarketData();
+        loadCoinData();
+      });
+
+      // Auto-refresh every 30 seconds
+      setInterval(function() {
+        loadMarketData();
+        loadCoinData();
+      }, 30000);
+    });
+
+    function loadMarketData() {
+      $.ajax({
+        url: 'https://api.coingecko.com/api/v3/global',
+        type: 'GET',
+        success: function(data) {
+          const marketData = data.data;
+          $('#globalMarketData').html(`
+            <h2>Resumen del Mercado</h2>
+            <p>Capitalización de mercado: ${marketData.total_market_cap.usd.toLocaleString()}</p>
+            <p>Volumen 24h: ${marketData.total_volume.usd.toLocaleString()}</p>
+            <p>Dominancia BTC: ${marketData.market_cap_percentage.btc.toFixed(1)}%</p>
+            <p>Dominancia ETH: ${marketData.market_cap_percentage.eth.toFixed(1)}%</p>
+            <p>Criptomonedas: ${marketData.active_cryptocurrencies}</p>
+          `);
+        },
+        error: function() {
+          $('#globalMarketData').html('<p>Error al cargar datos del mercado</p>');
+        }
       });
     }
 
-    // Cargar los widgets cada 15 segundos usando AJAX
-    setInterval(cargarWidgets, 15000);
-    
-    // Cargar los widgets inicialmente cuando se carga la página
-    $(document).ready(function() {
-      cargarWidgets();
-    });
+    function loadCoinData() {
+      // This would be where you'd load additional coin data via AJAX
+      // For now we'll just notify the widgets were updated
+      console.log('Coin data updated at ' + new Date().toLocaleTimeString());
+    }
   </script>
 </body>
 </html>
